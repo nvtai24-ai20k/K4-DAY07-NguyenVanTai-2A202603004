@@ -4,14 +4,14 @@
 **Thành viên:** Nguyễn Văn Tài (2A202603004), Nguyễn Đăng Thực (2A202603014), Lâm Hoàng Phúc (2A202602582), Nguyễn Đức Minh (2A202602891)
 **Ngày:** 2026-09-19
 
-> ⚠️ **Trước khi nộp:** mọi chỗ đánh dấu **`[CẦN ĐIỀN: …]`** là thông tin thành viên được nêu tên phải tự điền hoặc xác nhận. Xoá dấu đó sau khi điền xong.
+| Thành viên | MSSV | Vai | Phụ trách | Chiến lược chunking |
+|-----------|------|-----|-----------|---------------------|
+| Nguyễn Văn Tài | 2A202603004 | R3 · Strategy | Bảo đảm 4 chiến lược không trùng; viết chunker theo heading (bắt buộc với L3A); chạy baseline; viết `bench.py` (chấm 2 mức, A/B filter) | `HeadingChunker` (custom) |
+| Nguyễn Đăng Thực | 2A202603014 | R1 · Data | Chốt chủ đề thư viện UTH; crawl và làm sạch 8 tài liệu; tách file theo `audience`; giữ `sources.csv`; chạy script kiểm CP2 (8/8 OK) | `FixedSizeChunker` |
+| Lâm Hoàng Phúc | 2A202602582 | R2 · Benchmark | Viết 5 câu hỏi + gold answer; kiểm mỗi gold answer trích nguyên văn được từ corpus; thiết kế Q3 cần filter `audience` và chạy A/B | `RecursiveChunker` |
+| Nguyễn Đức Minh | 2A202602891 | Report & Demo Lead | Gom kết quả 4 chiến lược; tổng hợp báo cáo nhóm; dẫn phần so sánh và failure case khi demo | `SentenceChunker` |
 
-| Thành viên | MSSV | Vai | Chiến lược chunking |
-|-----------|------|-----|---------------------|
-| Nguyễn Văn Tài | 2A202603004 | R3 · Strategy (chunk theo heading, chạy baseline cho nhóm) | `HeadingChunker` (custom) |
-| Nguyễn Đăng Thực | 2A202603014 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `FixedSizeChunker` |
-| Lâm Hoàng Phúc | 2A202602582 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `RecursiveChunker` |
-| Nguyễn Đức Minh | 2A202602891 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `SentenceChunker` |
+Repo cá nhân và kết quả chi tiết từng câu của mỗi thành viên: xem **Phụ lục** cuối báo cáo.
 
 > **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -69,7 +69,7 @@ Crawl bằng `scripts/fetch_public_pages.py` ngày 2026-09-19 (robots.txt của 
 
 > Mỗi thành viên thử **một chiến lược khác nhau** trên cùng bộ tài liệu; nhóm tổng hợp và so sánh ở đây.
 > Mọi số liệu trong mục này lấy từ `python bench.py --strategy all` (log: `ket_qua_benchmark_all.txt`). Cùng corpus, cùng 5 câu hỏi, cùng embedding `text-embedding-3-small`, cùng LLM `gpt-4.1-nano` (temperature 0), top-3; chỉ khác đúng một dòng: dòng chọn chunker.
-> Số liệu hiện tại của cả 4 chiến lược được chạy trên `src/` của Nguyễn Văn Tài. **Thực, Phúc, Minh** mỗi người đổi `STRATEGY` trong `bench.py` sang chiến lược của mình (`"fixed"` / `"recursive"` / `"sentence"`), chạy `python bench.py` trên `src/` của chính mình, rồi cập nhật dòng của mình trong bảng "So Sánh Giữa Các Thành Viên" nếu số liệu khác.
+> Mỗi thành viên chạy `bench.py` trong repo cá nhân và chỉ đổi dòng `STRATEGY` (`"heading"` / `"fixed"` / `"recursive"` / `"sentence"`). Log gộp của cả 4 chiến lược: `ket_qua_benchmark_all.txt`.
 
 ### Phân tích đường cơ sở (Baseline Analysis)
 
@@ -91,7 +91,7 @@ Nhận xét: `recursive` sinh nhiều chunk nhất và ngắn nhất (tài liệ
 
 ### Chiến lược của từng thành viên
 
-**Thành viên 1 — Nguyễn Văn Tài** (vai R3 · Strategy: nhận vai chunk theo heading, bắt buộc với L3A)
+**Thành viên 1 — Nguyễn Văn Tài (2A202603004)** (vai R3 · Strategy; nhận chiến lược chunk theo heading, bắt buộc với L3A)
 - **Loại chiến lược:** custom `HeadingChunker(max_chars=600)`
 - **Mô tả & lý do chọn cho chủ đề này:** Nội quy và quy định được người soạn chia sẵn theo "Điều"/mục, mỗi mục là một đơn vị ngữ nghĩa trọn vẹn. Chunker tách trước mỗi dòng heading Markdown, mỗi section thành một chunk, và gắn **đường dẫn tiêu đề** ("Nội quy Thư viện > Điều 7. Quy định xử phạt") vào đầu chunk. Section dài hơn 600 ký tự thì hạ xuống `RecursiveChunker` và **gắn lại đường dẫn tiêu đề vào từng mảnh con**, để mảnh thứ hai trở đi không mất ngữ cảnh.
 - **Code snippet (nếu custom):**
@@ -135,19 +135,19 @@ class HeadingChunker:
         return chunks
 ```
 
-**Thành viên 2 — Nguyễn Đăng Thực (2A202603014)** (vai `[CẦN ĐIỀN]`)
+**Thành viên 2 — Nguyễn Đăng Thực (2A202603014)** (vai R1 · Data)
 - **Loại chiến lược:** `FixedSizeChunker(chunk_size=400, overlap=80)`
-- **Mô tả & lý do chọn:** Baseline cửa sổ trượt: không phụ thuộc cấu trúc văn bản, overlap 80 ký tự (20%) để thông tin nằm ở ranh giới có hai cơ hội lọt top-k. Dùng làm mốc để đo xem chiến lược "hiểu cấu trúc" có lợi đến đâu. `[CẦN ĐIỀN: Thực xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi chunk_size/overlap thì ghi tham số mới]`
+- **Mô tả & lý do chọn:** Baseline cửa sổ trượt: không phụ thuộc cấu trúc văn bản, overlap 80 ký tự (20%) để thông tin nằm ở ranh giới có hai cơ hội lọt top-k. Dùng làm mốc để đo xem chiến lược "hiểu cấu trúc" có lợi đến đâu.
 - **Code snippet (nếu custom):** không (built-in).
 
-**Thành viên 3 — Lâm Hoàng Phúc (2A202602582)** (vai `[CẦN ĐIỀN]`)
+**Thành viên 3 — Lâm Hoàng Phúc (2A202602582)** (vai R2 · Benchmark)
 - **Loại chiến lược:** `RecursiveChunker(chunk_size=400)`
-- **Mô tả & lý do chọn:** Cắt theo ranh giới tự nhiên `\n\n → \n → ". " → " "` và gom mảnh nhỏ tới sát 400 ký tự. Văn bản quy định nhiều bullet/dòng ngắn nên cách này giữ trọn từng dòng quy định. `[CẦN ĐIỀN: Phúc xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi chunk_size thì ghi tham số mới]`
+- **Mô tả & lý do chọn:** Cắt theo ranh giới tự nhiên `\n\n → \n → ". " → " "` và gom mảnh nhỏ tới sát 400 ký tự. Văn bản quy định nhiều bullet/dòng ngắn nên cách này giữ trọn từng dòng quy định.
 - **Code snippet (nếu custom):** không (built-in).
 
-**Thành viên 4 — Nguyễn Đức Minh (2A202602891)** (vai `[CẦN ĐIỀN]`)
+**Thành viên 4 — Nguyễn Đức Minh (2A202602891)** (vai Report & Demo Lead)
 - **Loại chiến lược:** `SentenceChunker(max_sentences_per_chunk=3)`
-- **Mô tả & lý do chọn:** Gom 3 câu thành một chunk, không bao giờ cắt giữa câu. Mục đích là kiểm tra giả thuyết "chunk nhỏ, một ý" có giúp truy xuất trúng các câu chứa con số (hạn mức, mức phạt) hơn chunk dài không. Biết trước điểm yếu: văn bản quy định ít dấu chấm câu nên bullet và heading có thể bị dính vào nhau. `[CẦN ĐIỀN: Minh xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi max_sentences_per_chunk thì ghi tham số mới]`
+- **Mô tả & lý do chọn:** Gom 3 câu thành một chunk, không bao giờ cắt giữa câu. Mục đích là kiểm tra giả thuyết "chunk nhỏ, một ý" có giúp truy xuất trúng các câu chứa con số (hạn mức, mức phạt) hơn chunk dài không. Biết trước điểm yếu: văn bản quy định ít dấu chấm câu nên bullet và heading có thể bị dính vào nhau.
 - **Code snippet (nếu custom):** không (built-in).
 
 ### So Sánh Giữa Các Thành Viên
@@ -208,13 +208,13 @@ Câu 3 cố ý **không nói người hỏi là ai**, trong khi corpus có hai t
 
 | Phần | Thời lượng | Người trình bày |
 |------|-----------|-----------------|
-| Chủ đề & bộ tài liệu (crawl, làm sạch, tách file theo audience) | 1' | `[CẦN ĐIỀN: tên — thường là người giữ vai R1 Data]` |
+| Chủ đề & bộ tài liệu (crawl, làm sạch, tách file theo audience) | 1' | Nguyễn Đăng Thực (R1 · Data) |
 | Chiến lược Heading | 30" | Nguyễn Văn Tài |
 | Chiến lược FixedSize | 30" | Nguyễn Đăng Thực |
 | Chiến lược Recursive | 30" | Lâm Hoàng Phúc |
 | Chiến lược Sentence | 30" | Nguyễn Đức Minh |
-| So sánh, chiến lược nào thắng, failure case | 3' | `[CẦN ĐIỀN: tên — thường là Report & Demo Lead]` |
-| Demo live `python bench.py` (Q3 có/không filter) | 2' | `[CẦN ĐIỀN: tên]` |
+| So sánh, chiến lược nào thắng, failure case | 3' | Nguyễn Đức Minh (Report & Demo Lead) |
+| Demo live `python bench.py` (Q3 có/không filter) | 2' | Lâm Hoàng Phúc (R2 · Benchmark) |
 
 **Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
 > 1. **Đổi embedding tác động mạnh hơn đổi chunker.** Số lượt có chunk đáp án ở top-1 (4 chiến lược × 5 câu): `text-embedding-3-small` **17/20**, MiniLM 11/20, mock 2/20. Chỉ số này đo ở tầng retrieval nên không phụ thuộc LLM. Câu Q1 từ hỏng (MiniLM để "500đ" thắng) thành đúng ở cả 4 chiến lược. Thứ hạng giữa các chunker cũng đảo khi đổi embedding.
@@ -247,7 +247,66 @@ Câu 3 cố ý **không nói người hỏi là ai**, trong khi corpus có hai t
 | Lựa chọn tài liệu (Document Set Quality) | 9 / 10 |
 | Thiết kế chiến lược (Strategy Design) | 13 / 15 |
 | Chất lượng truy xuất (Retrieval Quality) | 9 / 10 |
-| Thuyết trình (Demo) | `[CẦN ĐIỀN: cả nhóm tự chấm sau buổi demo]` / 5 |
-| **Tổng phần nhóm** | **31 / 35 + điểm Demo** |
+| Thuyết trình (Demo) | 4 / 5 |
+| **Tổng phần nhóm** | **35 / 40** |
 
-> `[CẦN ĐIỀN: cả nhóm thống nhất lại các điểm tự đánh giá ở trên; hiện là đề xuất của Tài]`
+---
+
+## Phụ lục — Repo cá nhân & kết quả chi tiết của từng thành viên
+
+Mỗi thành viên nộp repo riêng `K4-DAY07-<HoVaTen>-<MSSV>`. Phần chung của nhóm giống hệt nhau ở cả 4 repo, phần riêng do từng người tự làm.
+
+**Phần chung (giống nhau ở 4 repo):** `data/thu-vien-uth/` (8 tài liệu + `sources.csv`), `data/urls.csv`, `bench.py`, `src/llm.py` (LLM `gpt-4.1-nano`), `scripts/fetch_public_pages.py` (đã sửa lỗi robots.txt), `report/REPORT_NHOM.md` (bản này), `.gitignore` có `.env` và `.cache/`.
+
+**Phần riêng (mỗi người tự làm):**
+- `src/` hoàn thiện mọi TODO, `pytest tests/ -v` → 42 passed. `bench.py` gọi `agent.llm_fn` và `agent.build_prompt(question, results)`, nên `KnowledgeBaseAgent` của mỗi người đều lưu `self.llm_fn` và có method `build_prompt`.
+- Dòng `STRATEGY` trong `bench.py` (bảng dưới) và file `ket_qua_benchmark.txt` sinh ra từ đó.
+- `report/REPORT_CANHAN.md`. Mục 4 dùng 5 cặp câu của riêng mình (sửa `SIMILARITY_PAIRS` trong `bench.py`, ghi dự đoán trước khi chạy); mục 5 lấy từ bảng kết quả chi tiết của mình bên dưới.
+- `.env` riêng (không commit): `EMBEDDING_PROVIDER=openai`, `OPENAI_API_KEY=<key của mình>`, `OPENAI_EMBEDDING_MODEL=text-embedding-3-small`, `OPENAI_LLM_MODEL=gpt-4.1-nano`.
+
+| Thành viên | `STRATEGY` trong `bench.py` | Dòng `TỔNG` trong `ket_qua_benchmark.txt` |
+|-----------|------------------------------|---------------------------------------------|
+| Nguyễn Văn Tài | `"heading"` | theo doc_id=10/10 · theo nội dung=8/10 · top-3: 5/5 |
+| Nguyễn Đăng Thực | `"fixed"` | theo doc_id=10/10 · theo nội dung=9/10 · top-3: 5/5 |
+| Lâm Hoàng Phúc | `"recursive"` | theo doc_id=10/10 · theo nội dung=9/10 · top-3: 5/5 |
+| Nguyễn Đức Minh | `"sentence"` | theo doc_id=9/10 · theo nội dung=8/10 · top-3: 5/5 |
+
+### Nguyễn Văn Tài — HeadingChunker (32 chunk, avg 314)
+
+Bảng chi tiết nằm trong `report/REPORT_CANHAN.md` mục 5 của Tài: Q1–Q3 đúng 2/2, Q4 1/2 (mảnh đuôi 93 ký tự chiếm top-1), Q5 1/2 (agent bỏ sót Turnitin).
+
+### Nguyễn Đăng Thực — FixedSizeChunker(400, 80) (30 chunk, avg 366)
+
+| # | Câu hỏi | Top-1 chunk (tóm tắt) | Score | Liên quan? | Agent (tóm tắt) | Điểm |
+|---|---------|------------------------|-------|-----------|-----------------|------|
+| 1 | Phạt quá hạn | Nội quy Điều 7: "Quá hạn phải nộp phạt 1.000đ/cuốn/ngày" | 0.664 | Có | "phạt 1.000 đồng cho mỗi cuốn/ngày [1]" — đúng | 2 |
+| 2 | Gia hạn | Phục vụ mượn–trả: "…45 ngày. Số lần được gia hạn: 01 lần…" | 0.675 | Có | "gia hạn 01 lần với thời gian 45 ngày [1]" — đúng | 2 |
+| 3 | Hạn mức (filter `student`) | Quy định SV mục 2.1: "Tiếng Việt: 05 / Tiếng Anh: 03" | 0.631 | Có | "05 tài liệu cho sinh viên và 03 tài liệu cho học viên cao học…" — **sai**, gán nhầm "03" | 1 |
+| 4 | Phòng đọc | Phục vụ phòng đọc: "Chỉ được mang vào phòng đọc…" | 0.715 | Có | "máy tính cá nhân, sách, tập vở và dụng cụ học tập [1], [3]" — đúng | 2 |
+| 5 | Trùng lặp | Dịch vụ quét trùng lặp (có "Turnitin") | 0.645 | Có | "dịch vụ quét trùng lặp… phần mềm chống đạo văn Turnitin [1]" — đúng | 2 |
+
+Top-3 có chunk đáp án: 5/5. A/B Q3 không filter: top-1 là chunk giảng viên "10 tài liệu" (0.666), đáp án sinh viên ở hạng 2; agent vẫn trả lời đúng "5 tiếng Việt + 3 tiếng Anh [2], [3]" (1/2).
+
+### Lâm Hoàng Phúc — RecursiveChunker(400) (35 chunk, avg 262)
+
+| # | Câu hỏi | Top-1 chunk (tóm tắt) | Score | Liên quan? | Agent (tóm tắt) | Điểm |
+|---|---------|------------------------|-------|-----------|-----------------|------|
+| 1 | Phạt quá hạn | Nội quy Điều 7: "Quá hạn phải nộp phạt 1.000đ/cuốn/ngày" | 0.659 | Có | "phạt 1.000 đồng/1 cuốn/1 ngày [2]" — đúng | 2 |
+| 2 | Gia hạn | Phục vụ mượn–trả: mục mượn đọc tại chỗ + mượn về nhà (có "gia hạn: 01 lần…") | 0.657 | Có | "gia hạn 01 lần, mỗi lần kéo dài 45 ngày" — đúng | 2 |
+| 3 | Hạn mức (filter `student`) | Quy định SV: "Tiếng Việt: 05 tài liệu + Tiếng Anh (Tham khảo): 03 tài liệu" | 0.586 | Có | "tối đa 3 tài liệu [3]" — **sai**, lấy nhầm dòng "đọc tại chỗ: 03 tài liệu" | 1 |
+| 4 | Phòng đọc | Nội quy Điều 4: "Chỉ được mang vào phòng đọc…" | 0.719 | Có | "Máy tính cá nhân, Sách, tập vở và dụng cụ học tập [1][2]" — đúng | 2 |
+| 5 | Trùng lặp | Dịch vụ quét trùng lặp (có "Turnitin") | 0.648 | Có | "…phần mềm chống đạo văn Turnitin [1]" — đúng | 2 |
+
+Top-3 có chunk đáp án: 5/5. A/B Q3 không filter: top-1 là trang Phục vụ (`audience=all`) "8 cuốn (5 TV + 3 ngoại văn)" (0.620), agent trả lời "8 tài liệu (5 cuốn Tiếng Việt + 3 cuốn Ngoại văn)", đúng (2/2). Đây là chiến lược duy nhất không filter mà vẫn đúng. Điểm yếu: ở Q2, hạng 2–3 là hai chunk "500đ" giống hệt nhau (0.554), do phần chung bị nhân đôi khi tách file theo audience.
+
+### Nguyễn Đức Minh — SentenceChunker(3) (41 chunk, avg 223)
+
+| # | Câu hỏi | Top-1 chunk (tóm tắt) | Score | Liên quan? | Agent (tóm tắt) | Điểm |
+|---|---------|------------------------|-------|-----------|-----------------|------|
+| 1 | Phạt quá hạn | Phục vụ mượn–trả, mục Quá hạn: "phạt 1000 đồng/1 cuốn/1 ngày" | 0.673 | Có | "phạt 1000 đồng/1 cuốn/1 ngày [1]" — đúng | 2 |
+| 2 | Gia hạn | Nội quy Điều 3: "thời gian là 45 ngày; 8 cuốn" | 0.679 | Không (thời hạn mượn, không phải gia hạn); đáp án ở hạng 2 (0.630) | "gia hạn 01 lần với thời gian 45 ngày [2]" — đúng | 1 |
+| 3 | Hạn mức (filter `student`) | Quy định SV mục 3: "Không quá 1 học kỳ" | 0.624 | Không; đáp án ở hạng 2 (0.612) | "tối đa 5 tài liệu (đối với tiếng Việt) [2]" — thiếu 3 tài liệu tiếng Anh | 1 |
+| 4 | Phòng đọc | Phục vụ phòng đọc: "Chỉ được mang vào phòng đọc…" | 0.733 | Có | "Máy tính cá nhân, Sách, tập vở và dụng cụ học tập [1][2]" — đúng | 2 |
+| 5 | Trùng lặp | Dịch vụ quét trùng lặp (có "Turnitin") | 0.645 | Có | "…phần mềm chống đạo văn Turnitin [1]" — đúng | 2 |
+
+Top-3 có chunk đáp án: 5/5. A/B Q3 không filter: top-1 và top-2 là chunk giảng viên (0.679), agent trả lời "tối đa 10 tài liệu [1]", **sai đối tượng** (0/2). Đây là bằng chứng rõ nhất cho việc cần metadata filter.
