@@ -17,6 +17,7 @@ from src.embeddings import (
     OpenAIEmbedder,
     _mock_embed,
 )
+from src.llm import OpenAIChatLLM
 from src.models import Document
 from src.store import EmbeddingStore
 
@@ -119,7 +120,14 @@ def run_manual_demo(question: str | None = None, sample_files: list[str] | None 
         print(f"   content preview: {result['content'][:120].replace(chr(10), ' ')}...")
 
     print("\n=== KnowledgeBaseAgent Test ===")
-    agent = KnowledgeBaseAgent(store=store, llm_fn=demo_llm)
+    llm_fn = demo_llm
+    if os.getenv("OPENAI_API_KEY"):
+        try:
+            llm_fn = OpenAIChatLLM()
+        except Exception:
+            llm_fn = demo_llm
+    print(f"LLM backend: {getattr(llm_fn, '_backend_name', 'demo_llm')}")
+    agent = KnowledgeBaseAgent(store=store, llm_fn=llm_fn)
     print(f"Question: {query}")
     print("Agent answer:")
     print(agent.answer(query, top_k=3))

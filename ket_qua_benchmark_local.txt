@@ -1,0 +1,253 @@
+Corpus: data\thu-vien-uth | Embedding backend: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 | top_k=3
+LLM: extractive_llm (trích nguyên văn đoạn ngữ cảnh khớp từ khóa nhất — không phải LLM sinh văn bản)
+
+==============================================================================
+CHIẾN LƯỢC: fixed  (FixedSizeChunker)
+Số chunk đã nạp: 30 | avg_length=366 | min=164 | max=400
+
+Q1 [không filter] Trả sách quá hạn thì bị phạt bao nhiêu tiền?
+  1.   score=0.656 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | tiếp theo. (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày).  ## 4. Quy định về xử lý vi phạ
+  2.   score=0.614 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | ệu (làm rách, ướt, viết vẽ vào các trang của tài liệu): Bạn đọc phải bồi thường bằng tài liệu cùng nhan đề, cù
+  3.   score=0.610 doc=quy-dinh-muon-tra-sinh-vien aud=student | ả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Ghi chú: Thời gian mượn lại tài 
+  Agent: 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm kết thúc học kỳ (Theo lịch học của Phòng Đào tạo). [1]
+  Gold : 1.000đ/cuốn/ngày (Nội quy Thư viện 01/11/2022, Điều 7; trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=0/2 | theo nội dung=0/2 | chunk chứa đáp án ở hạng=None | agent đúng=False
+
+Q2 [không filter] Sách mượn về nhà được gia hạn mấy lần, mỗi lần bao lâu?
+  1. ✓ score=0.846 doc=phuc-vu-muon-tra-tai-lieu aud=all | n), 2 cuốn không cùng tên sách.  Thời gian mượn về nhà: 45 ngày.  Số lần được gia hạn: 01 lần với thời gian 45
+  2.   score=0.746 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | n: 10 tài liệu.  ### 2.2 Tài liệu đọc tại chỗ  Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng
+  3.   score=0.735 doc=phuc-vu-muon-tra-tai-lieu aud=all | ủa tài liệụ; chọn và mang tài liệu ra quầy thủ thư để làm thủ tục ghi mượn.  ## Mượn đọc tại chỗ  Số lượng tài
+  Agent: Số lượng tài liệu mượn về nhà: 8 cuốn (5 cuốn Tiếng Việt + 3 cuốn Ngoại văn), 2 cuốn không cùng tên sách. [3]
+  Gold : Được gia hạn 01 lần, thời gian 45 ngày (trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=1 | agent đúng=False
+
+Q3 [có filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+    metadata_filter={'audience': 'student'}
+  1.   score=0.748 doc=quy-dinh-muon-tra-sinh-vien aud=student | ượn. Khi trả tài liệu, Thư viện kiểm tra nếu đầy đủ sẽ hoàn trả lại tiền đặt cọc.  ### 2.2 Tài liệu đọc tại ch
+  2. ✓ score=0.735 doc=quy-dinh-muon-tra-sinh-vien aud=student | khi mượn.  ## 2. Số lượng tài liệu được mượn  ### 2.1 Tài liệu mượn về nhà  – Đối với bạn đọc là Sinh viên: + 
+  3.   score=0.626 doc=quy-dinh-muon-tra-sinh-vien aud=student | # Quy định mượn - trả tài liệu (sinh viên, học viên)  ## 1. Quy định chung  – Xuất trình Thẻ Thư viện (Hoặc th
+  Agent: Bạn đọc phải trả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Gh [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=2 | agent đúng=False
+
+Q3 [A/B — KHÔNG filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+  1.   score=0.769 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | n: 10 tài liệu.  ### 2.2 Tài liệu đọc tại chỗ  Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng
+  2. ✓ score=0.755 doc=phuc-vu-muon-tra-tai-lieu aud=all | ủa tài liệụ; chọn và mang tài liệu ra quầy thủ thư để làm thủ tục ghi mượn.  ## Mượn đọc tại chỗ  Số lượng tài
+  3.   score=0.748 doc=quy-dinh-muon-tra-sinh-vien aud=student | ượn. Khi trả tài liệu, Thư viện kiểm tra nếu đầy đủ sẽ hoàn trả lại tiền đặt cọc.  ### 2.2 Tài liệu đọc tại ch
+  Agent: Bạn đọc phải trả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày). [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=1/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=2 | agent đúng=False
+
+Q4 [không filter] Khi vào phòng đọc được mang theo những gì?
+  1. ✓ score=0.612 doc=phuc-vu-phong-doc aud=all | # Phục vụ phòng đọc  Người sử dụng thư viện xuất trình thẻ Cán bộ/ Giảng viên/ Sinh viên.  Chỉ được mang vào p
+  2. ✓ score=0.584 doc=noi-quy-thu-vien aud=all | c sách tại chỗ tại các Phòng đọc. - Được trợ giúp tra cứu và hướng dẫn sử dụng Thư viện. - Được mượn sách về n
+  3.   score=0.566 doc=phuc-vu-phong-doc aud=all | hiết về tài liệu.  Xem sơ đồ bố trí kho sách; Xem bảng chỉ dẫn ở đầu mỗi dãy kệ sách để xác định vị trí của tà
+  Agent: Chỉ được mang vào phòng đọc: Máy tính cá nhân, Sách, tập vở và dụng cụ học tập. [1]
+  Gold : Chỉ được mang: máy tính cá nhân, sách, tập vở và dụng cụ học tập (Nội quy Điều 4; trang Phục vụ phòng đọc).
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+Q5 [không filter] Muốn kiểm tra tỉ lệ trùng lặp cho khóa luận, đồ án thì dùng dịch vụ nào?
+  1. ✓ score=0.527 doc=dich-vu-quet-trung-lap aud=all | # Dịch vụ quét trùng lặp  ## Dịch vụ  Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận 
+  2.   score=0.471 doc=noi-quy-thu-vien aud=all | uyển, thay đổi các thiết bị khi chưa được phép. - Bạn đọc báo ngay cho Thủ thư biết nếu có hư hỏng, mất mát củ
+  3.   score=0.469 doc=quy-dinh-muon-tra-sinh-vien aud=student | ả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Ghi chú: Thời gian mượn lại tài 
+  Agent: Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận án tiến sĩ, Chuyên đề tiến sĩ, Luận văn thạc sĩ, Khóa luận, Đồ án tốt nghiệp, Bài báo khoa học, Báo cáo nghiên cứu khoa học, Đề tài nghiên cứu khoa học các cấp, Bài giảng, giáo trình … bằng phần mềm chống đạo văn Turnitin. [1]
+  Gold : Dịch vụ quét trùng lặp bằng phần mềm Turnitin; SV, GV-CB dùng qua Hệ thống đào tạo trực tuyến, người dùng khác đến văn phòng LIC.
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+TỔNG [fixed]: theo doc_id=8/10 | theo nội dung=6/10 | có chunk chứa đáp án trong top-3: 4/5
+
+==============================================================================
+CHIẾN LƯỢC: sentence  (SentenceChunker)
+Số chunk đã nạp: 41 | avg_length=223 | min=68 | max=519
+
+Q1 [không filter] Trả sách quá hạn thì bị phạt bao nhiêu tiền?
+  1.   score=0.693 doc=quy-dinh-muon-tra-sinh-vien aud=student | Thời gian tính quá hạn bắt đầu từ thời điểm kết thúc học kỳ (Theo lịch học của Phòng Đào tạo). 4.2 Trường hợp 
+  2.   score=0.671 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định về xử lý vi phạm  4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính qu
+  3. ✓ score=0.656 doc=noi-quy-thu-vien aud=all | - Tắt máy và sắp xếp ghế, chuột, bàn phím ngay ngắn trước khi ra về. ## Điều 7. Quy định xử phạt  - Quá hạn ph
+  Agent: 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm kết thúc học kỳ (Theo lịch học của Phòng Đào tạo). 4.2 Trường hợp bị mất hoặc làm hư hỏng tài liệu (làm rách, ướt, viết vẽ vào các trang của tài liệu): Bạn đọc phải bồi thường bằng tài liệu cùng nhan đề, cùng tác giả và Lệ phí thẻ từ (10.000đ). [2]
+  Gold : 1.000đ/cuốn/ngày (Nội quy Thư viện 01/11/2022, Điều 7; trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=1/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=3 | agent đúng=False
+
+Q2 [không filter] Sách mượn về nhà được gia hạn mấy lần, mỗi lần bao lâu?
+  1. ✓ score=0.776 doc=phuc-vu-muon-tra-tai-lieu aud=all | Thời gian mượn về nhà: 45 ngày. Số lần được gia hạn: 01 lần với thời gian 45 ngày  Kiểm tra lại tình trạng tài
+  2.   score=0.763 doc=quy-dinh-muon-tra-sinh-vien aud=student | (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày). ## 4. Quy định về xử lý vi phạm  4.1 Trườn
+  3.   score=0.754 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Số lượng tài liệu mượn đọc tại chỗ: 03 tài liệu. ## 3. Thời gian mượn tài liệu về nhà  Không quá 1 học kỳ.
+  Agent: Thời gian mượn về nhà: 45 ngày. Số lần được gia hạn: 01 lần với thời gian 45 ngày [1]
+  Gold : Được gia hạn 01 lần, thời gian 45 ngày (trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+Q3 [có filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+    metadata_filter={'audience': 'student'}
+  1.   score=0.705 doc=quy-dinh-muon-tra-sinh-vien aud=student | Khi trả tài liệu, Thư viện kiểm tra nếu đầy đủ sẽ hoàn trả lại tiền đặt cọc. ### 2.2 Tài liệu đọc tại chỗ  Luậ
+  2. ✓ score=0.698 doc=quy-dinh-muon-tra-sinh-vien aud=student | – Kiểm tra số lượng và tình trạng tài liệu khi mượn. ## 2. Số lượng tài liệu được mượn  ### 2.1 Tài liệu mượn 
+  3.   score=0.641 doc=quy-dinh-muon-tra-sinh-vien aud=student | ## 3. Thời gian mượn tài liệu về nhà  Không quá 1 học kỳ. Bạn đọc phải trả hết tài liệu của học kỳ trước mới đ
+  Agent: – Đối với học viên Vừa làm vừa học, Học viên cao học, Nghiên cứu sinh: Bạn đọc có nhu cầu mượn tài liệu phải đặt cọc tiền gấp đôi giá trị tài liệu mượn. [2]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=2 | agent đúng=False
+
+Q3 [A/B — KHÔNG filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+  1.   score=0.808 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Số lượng tài liệu mượn đọc tại chỗ: 03 tài liệu. ## 3. Thời gian mượn tài liệu về nhà  Không quá 1 học kỳ.
+  2.   score=0.802 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | ## 2. Số lượng tài liệu được mượn  ### 2.1 Tài liệu mượn về nhà  – Đối với bạn đọc là Cán bộ, Giảng viên: 10 t
+  3.   score=0.705 doc=quy-dinh-muon-tra-sinh-vien aud=student | Khi trả tài liệu, Thư viện kiểm tra nếu đầy đủ sẽ hoàn trả lại tiền đặt cọc. ### 2.2 Tài liệu đọc tại chỗ  Luậ
+  Agent: Số lượng tài liệu mượn đọc tại chỗ: 03 tài liệu. ## 3. Thời gian mượn tài liệu về nhà [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=1/2 | theo nội dung=0/2 | chunk chứa đáp án ở hạng=None | agent đúng=False
+
+Q4 [không filter] Khi vào phòng đọc được mang theo những gì?
+  1. ✓ score=0.719 doc=noi-quy-thu-vien aud=all | Nội quy phòng đọc  - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào phòng đọc: Máy tính cá nhâ
+  2.   score=0.668 doc=noi-quy-thu-vien aud=all | - Không tự ý mang tài liệu ra khỏi phòng đọc. - Sau khi đọc xong, xếp ghế ngồi gọn gàng, trả tài liệu về đúng 
+  3. ✓ score=0.642 doc=phuc-vu-phong-doc aud=all | # Phục vụ phòng đọc  Người sử dụng thư viện xuất trình thẻ Cán bộ/ Giảng viên/ Sinh viên. Chỉ được mang vào ph
+  Agent: - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào phòng đọc: Máy tính cá nhân, Sách, tập vở và dụng cụ học tập. - Mượn tài liệu đọc tại chỗ. [1]
+  Gold : Chỉ được mang: máy tính cá nhân, sách, tập vở và dụng cụ học tập (Nội quy Điều 4; trang Phục vụ phòng đọc).
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+Q5 [không filter] Muốn kiểm tra tỉ lệ trùng lặp cho khóa luận, đồ án thì dùng dịch vụ nào?
+  1. ✓ score=0.529 doc=dich-vu-quet-trung-lap aud=all | # Dịch vụ quét trùng lặp  ## Dịch vụ  Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận 
+  2.   score=0.449 doc=quy-dinh-muon-tra-sinh-vien aud=student | (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày). ## 4. Quy định về xử lý vi phạm  4.1 Trườn
+  3.   score=0.434 doc=noi-quy-thu-vien aud=all | - Không tự ý điều chỉnh, di chuyển, thay đổi các thiết bị khi chưa được phép. - Bạn đọc báo ngay cho Thủ thư b
+  Agent: Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận án tiến sĩ, Chuyên đề tiến sĩ, Luận văn thạc sĩ, Khóa luận, Đồ án tốt nghiệp, Bài báo khoa học, Báo cáo nghiên cứu khoa học, Đề tài nghiên cứu khoa học các cấp, Bài giảng, giáo trình … bằng phần mềm chống đạo văn Turnitin. ## Hỗ trợ [1]
+  Gold : Dịch vụ quét trùng lặp bằng phần mềm Turnitin; SV, GV-CB dùng qua Hệ thống đào tạo trực tuyến, người dùng khác đến văn phòng LIC.
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+TỔNG [sentence]: theo doc_id=9/10 | theo nội dung=8/10 | có chunk chứa đáp án trong top-3: 5/5
+
+==============================================================================
+CHIẾN LƯỢC: recursive  (RecursiveChunker)
+Số chunk đã nạp: 35 | avg_length=262 | min=27 | max=395
+
+Q1 [không filter] Trả sách quá hạn thì bị phạt bao nhiêu tiền?
+  1.   score=0.652 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm 
+  2.   score=0.652 doc=quy-dinh-muon-tra-sinh-vien aud=student | 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm 
+  3.   score=0.619 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | 4.2 Trường hợp bị mất hoặc làm hư hỏng tài liệu (làm rách, ướt, viết vẽ vào các trang của tài liệu): Bạn đọc p
+  Agent: 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm kết thúc học kỳ (Theo lịch học của Phòng Đào tạo). [1]
+  Gold : 1.000đ/cuốn/ngày (Nội quy Thư viện 01/11/2022, Điều 7; trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=0/2 | theo nội dung=0/2 | chunk chứa đáp án ở hạng=None | agent đúng=False
+
+Q2 [không filter] Sách mượn về nhà được gia hạn mấy lần, mỗi lần bao lâu?
+  1.   score=0.754 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  2.   score=0.754 doc=quy-dinh-muon-tra-sinh-vien aud=student | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  3. ✓ score=0.743 doc=phuc-vu-muon-tra-tai-lieu aud=all | ## Mượn đọc tại chỗ  Số lượng tài liệu mượn đọc tại chỗ: Tiếng Việt 02 cuốn/lần, ngoại văn 01 cuốn/lần.  Ghi t
+  Agent: Số lượng tài liệu mượn về nhà: 8 cuốn (5 cuốn Tiếng Việt + 3 cuốn Ngoại văn), 2 cuốn không cùng tên sách. [3]
+  Gold : Được gia hạn 01 lần, thời gian 45 ngày (trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=1/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=3 | agent đúng=False
+
+Q3 [có filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+    metadata_filter={'audience': 'student'}
+  1.   score=0.762 doc=quy-dinh-muon-tra-sinh-vien aud=student | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  2. ✓ score=0.679 doc=quy-dinh-muon-tra-sinh-vien aud=student | – Đối với bạn đọc là Sinh viên: + Tiếng Việt: 05 tài liệu + Tiếng Anh (Tham khảo): 03 tài liệu  – Đối với học 
+  3.   score=0.665 doc=quy-dinh-muon-tra-sinh-vien aud=student | 4.1 Trường hợp mượn tài liệu quá hạn: Phạt 500đ/ngày/1 cuốn sách. Thời gian tính quá hạn bắt đầu từ thời điểm 
+  Agent: Bạn đọc phải trả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày). [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=2 | agent đúng=False
+
+Q3 [A/B — KHÔNG filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+  1.   score=0.762 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  2.   score=0.762 doc=quy-dinh-muon-tra-sinh-vien aud=student | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  3. ✓ score=0.742 doc=phuc-vu-muon-tra-tai-lieu aud=all | ## Mượn đọc tại chỗ  Số lượng tài liệu mượn đọc tại chỗ: Tiếng Việt 02 cuốn/lần, ngoại văn 01 cuốn/lần.  Ghi t
+  Agent: Bạn đọc phải trả hết tài liệu của học kỳ trước mới được mượn tài liệu cho học kỳ tiếp theo. (Ghi chú: Thời gian mượn lại tài liệu vừa trả cách nhau 7-10 ngày). [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=1/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=3 | agent đúng=False
+
+Q4 [không filter] Khi vào phòng đọc được mang theo những gì?
+  1. ✓ score=0.683 doc=noi-quy-thu-vien aud=all | - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào phòng đọc: Máy tính cá nhân, Sách, tập vở và 
+  2. ✓ score=0.607 doc=phuc-vu-phong-doc aud=all | # Phục vụ phòng đọc  Người sử dụng thư viện xuất trình thẻ Cán bộ/ Giảng viên/ Sinh viên.  Chỉ được mang vào p
+  3.   score=0.590 doc=noi-quy-thu-vien aud=all | - Xem sơ đồ bố trí kho sách; Xem bảng chỉ dẫn ở đầu mỗi dãy kệ sách để xác định vị trí của tài liệụ; chọn và m
+  Agent: - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào phòng đọc: Máy tính cá nhân, Sách, tập vở và dụng cụ học tập. - Mượn tài liệu đọc tại chỗ. - Bạn đọc có thể tra tìm tài liệu trên máy tính hoặc tìm trực tiếp trong kho sách để có các thông tin cần thiết về tài liệu. [1]
+  Gold : Chỉ được mang: máy tính cá nhân, sách, tập vở và dụng cụ học tập (Nội quy Điều 4; trang Phục vụ phòng đọc).
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+Q5 [không filter] Muốn kiểm tra tỉ lệ trùng lặp cho khóa luận, đồ án thì dùng dịch vụ nào?
+  1. ✓ score=0.536 doc=dich-vu-quet-trung-lap aud=all | # Dịch vụ quét trùng lặp  ## Dịch vụ  Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận 
+  2.   score=0.398 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  3.   score=0.398 doc=quy-dinh-muon-tra-sinh-vien aud=student | Luận án, Luận văn, Khóa luận, CD-ROM, Tạp chí, Giáo trình tiếng Anh chuyên ngành.  Số lượng tài liệu mượn đọc 
+  Agent: Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận án tiến sĩ, Chuyên đề tiến sĩ, Luận văn thạc sĩ, Khóa luận, Đồ án tốt nghiệp, Bài báo khoa học, Báo cáo nghiên cứu khoa học, Đề tài nghiên cứu khoa học các cấp, Bài giảng, giáo trình … bằng phần mềm chống đạo văn Turnitin. [1]
+  Gold : Dịch vụ quét trùng lặp bằng phần mềm Turnitin; SV, GV-CB dùng qua Hệ thống đào tạo trực tuyến, người dùng khác đến văn phòng LIC.
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+TỔNG [recursive]: theo doc_id=7/10 | theo nội dung=6/10 | có chunk chứa đáp án trong top-3: 4/5
+
+==============================================================================
+CHIẾN LƯỢC: heading  (HeadingChunker)
+Số chunk đã nạp: 32 | avg_length=314 | min=93 | max=575
+
+Q1 [không filter] Trả sách quá hạn thì bị phạt bao nhiêu tiền?
+  1.   score=0.687 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 4. Quy định về xử lý vi phạm 4.1 Trường hợp mượn tài liệu
+  2.   score=0.659 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định mượn - trả tài liệu (cán bộ, giảng viên) > 4. Quy định về xử lý vi phạm 4.1 Trường hợp mượn tài liệu 
+  3. ✓ score=0.594 doc=phuc-vu-muon-tra-tai-lieu aud=all | Phục vụ mượn – trả tài liệu > Quá hạn Trả sách quá hạn phạt 1000 đồng/1 cuốn/1 ngày.  Không được mượn tiếp khi
+  Agent: Trả sách quá hạn phạt 1000 đồng/1 cuốn/1 ngày. [3]
+  Gold : 1.000đ/cuốn/ngày (Nội quy Thư viện 01/11/2022, Điều 7; trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=1/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=3 | agent đúng=True
+
+Q2 [không filter] Sách mượn về nhà được gia hạn mấy lần, mỗi lần bao lâu?
+  1. ✓ score=0.831 doc=phuc-vu-muon-tra-tai-lieu aud=all | Phục vụ mượn – trả tài liệu > Mượn về nhà Số lượng tài liệu mượn về nhà: 8 cuốn (5 cuốn Tiếng Việt + 3 cuốn Ng
+  2.   score=0.740 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định mượn - trả tài liệu (cán bộ, giảng viên) > 2. Số lượng tài liệu được mượn > 2.1 Tài liệu mượn về nhà 
+  3.   score=0.737 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 3. Thời gian mượn tài liệu về nhà Không quá 1 học kỳ.  Bạ
+  Agent: Số lượng tài liệu mượn về nhà: 8 cuốn (5 cuốn Tiếng Việt + 3 cuốn Ngoại văn), 2 cuốn không cùng tên sách. [1]
+  Gold : Được gia hạn 01 lần, thời gian 45 ngày (trang Phục vụ mượn – trả tài liệu).
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=1 | agent đúng=False
+
+Q3 [có filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+    metadata_filter={'audience': 'student'}
+  1.   score=0.799 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 2. Số lượng tài liệu được mượn > 2.2 Tài liệu đọc tại chỗ
+  2. ✓ score=0.751 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 2. Số lượng tài liệu được mượn > 2.1 Tài liệu mượn về nhà
+  3.   score=0.659 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 3. Thời gian mượn tài liệu về nhà Không quá 1 học kỳ.  Bạ
+  Agent: – Đối với học viên Vừa làm vừa học, Học viên cao học, Nghiên cứu sinh: Bạn đọc có nhu cầu mượn tài liệu phải đặt cọc tiền gấp đôi giá trị tài liệu mượn. Khi trả tài liệu, Thư viện kiểm tra nếu đầy đủ sẽ hoàn trả lại tiền đặt cọc. [2]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=2/2 | theo nội dung=1/2 | chunk chứa đáp án ở hạng=2 | agent đúng=False
+
+Q3 [A/B — KHÔNG filter] Mỗi bạn đọc được mượn tối đa bao nhiêu tài liệu về nhà?
+  1.   score=0.805 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định mượn - trả tài liệu (cán bộ, giảng viên) > 2. Số lượng tài liệu được mượn > 2.1 Tài liệu mượn về nhà 
+  2.   score=0.799 doc=quy-dinh-muon-tra-sinh-vien aud=student | Quy định mượn - trả tài liệu (sinh viên, học viên) > 2. Số lượng tài liệu được mượn > 2.2 Tài liệu đọc tại chỗ
+  3.   score=0.793 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định mượn - trả tài liệu (cán bộ, giảng viên) > 2. Số lượng tài liệu được mượn > 2.2 Tài liệu đọc tại chỗ 
+  Agent: – Đối với bạn đọc là Cán bộ, Giảng viên: 10 tài liệu. [1]
+  Gold : Với sinh viên: 05 tài liệu tiếng Việt + 03 tài liệu tiếng Anh (tham khảo), tức 8 cuốn.
+  Điểm: theo doc_id=1/2 | theo nội dung=0/2 | chunk chứa đáp án ở hạng=None | agent đúng=False
+
+Q4 [không filter] Khi vào phòng đọc được mang theo những gì?
+  1. ✓ score=0.680 doc=noi-quy-thu-vien aud=all | Nội quy Thư viện > Điều 4. Nội quy phòng đọc - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào 
+  2.   score=0.676 doc=noi-quy-thu-vien aud=all | Nội quy Thư viện > Điều 4. Nội quy phòng đọc - Không tự ý mang tài liệu ra khỏi phòng đọc. - Sau khi đọc xong,
+  3.   score=0.670 doc=phuc-vu-phong-doc aud=all | Phục vụ phòng đọc Sau khi đọc xong, xếp ghế ngồi gọn gàng, trả tài liệu về đúng nơi quy định.
+  Agent: - Xuất trình thẻ Thư viện khi vào phòng đọc. - Chỉ được mang vào phòng đọc: Máy tính cá nhân, Sách, tập vở và dụng cụ học tập. - Mượn tài liệu đọc tại chỗ. - Bạn đọc có thể tra tìm tài liệu trên máy tính hoặc tìm trực tiếp trong kho sách để có các thông tin cần thiết về tài liệu. - Xem sơ đồ bố trí kho sách; Xem bảng chỉ dẫn ở đầu mỗi dãy kệ sách để xác định vị trí của tài liệụ; chọn và mang tài l
+  Gold : Chỉ được mang: máy tính cá nhân, sách, tập vở và dụng cụ học tập (Nội quy Điều 4; trang Phục vụ phòng đọc).
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+Q5 [không filter] Muốn kiểm tra tỉ lệ trùng lặp cho khóa luận, đồ án thì dùng dịch vụ nào?
+  1. ✓ score=0.543 doc=dich-vu-quet-trung-lap aud=all | Dịch vụ quét trùng lặp > Dịch vụ Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận án ti
+  2.   score=0.448 doc=quy-dinh-muon-tra-can-bo-giang-vien aud=faculty | Quy định mượn - trả tài liệu (cán bộ, giảng viên) > 4. Quy định về xử lý vi phạm 4.1 Trường hợp mượn tài liệu 
+  3.   score=0.414 doc=phuc-vu-phong-doc aud=all | Phục vụ phòng đọc Sau khi đọc xong, xếp ghế ngồi gọn gàng, trả tài liệu về đúng nơi quy định.
+  Agent: Xác định tỉ lệ trùng lắp nội dung trong các Sản phẩm học thuật như Luận án tiến sĩ, Chuyên đề tiến sĩ, Luận văn thạc sĩ, Khóa luận, Đồ án tốt nghiệp, Bài báo khoa học, Báo cáo nghiên cứu khoa học, Đề tài nghiên cứu khoa học các cấp, Bài giảng, giáo trình … bằng phần mềm chống đạo văn Turnitin. [1]
+  Gold : Dịch vụ quét trùng lặp bằng phần mềm Turnitin; SV, GV-CB dùng qua Hệ thống đào tạo trực tuyến, người dùng khác đến văn phòng LIC.
+  Điểm: theo doc_id=2/2 | theo nội dung=2/2 | chunk chứa đáp án ở hạng=1 | agent đúng=True
+
+TỔNG [heading]: theo doc_id=9/10 | theo nội dung=7/10 | có chunk chứa đáp án trong top-3: 5/5
+
+==============================================================================
+TÓM TẮT
+  chiến lược chunks avg_len doc_id/10 nội dung/10 top3/5
+  fixed          30     366         8           6      4
+  sentence       41     223         9           8      5
+  recursive      35     262         7           6      4
+  heading        32     314         9           7      5
+
+==============================================================================
+BASELINE — ChunkingStrategyComparator().compare(chunk_size=200), bỏ frontmatter
+  noi-quy-thu-vien (3044 ký tự)
+    fixed_size    count= 16 avg_length=190.2
+    by_sentences  count= 15 avg_length=201.4
+    recursive     count= 26 avg_length=115.6
+  quy-dinh-muon-tra-sinh-vien (1864 ký tự)
+    fixed_size    count= 10 avg_length=186.4
+    by_sentences  count=  7 avg_length=264.0
+    recursive     count= 14 avg_length=131.5
+  phuc-vu-muon-tra-tai-lieu (992 ký tự)
+    fixed_size    count=  5 avg_length=198.4
+    by_sentences  count=  4 avg_length=244.8
+    recursive     count=  7 avg_length=140.0
+
+==============================================================================
+DỰ ĐOÁN ĐỘ TƯƠNG TỰ (compute_similarity)
+  1. dự đoán=cao   thực tế=0.874 | Sinh viên được mượn tối đa 8 cuốn sách về nhà. || Mỗi sinh viên có thể mang về nhà nhiều nhất tám quyển sách.
+  2. dự đoán=cao   thực tế=0.790 | The overdue fine is 1,000 VND per book per day. || Quá hạn phải nộp phạt 1.000đ/cuốn/ngày.
+  3. dự đoán=thấp  thực tế=-0.070 | Thư viện có phòng máy tính để tra cứu. || Giá vé máy bay đi Hà Nội tăng mạnh dịp Tết.
+  4. dự đoán=cao   thực tế=0.512 | Giảng viên được mượn 10 tài liệu. || Sinh viên được mượn 5 tài liệu tiếng Việt.
+  5. dự đoán=cao   thực tế=0.706 | Tôi muốn mượn sách ở thư viện. || Tôi không muốn mượn sách ở thư viện.

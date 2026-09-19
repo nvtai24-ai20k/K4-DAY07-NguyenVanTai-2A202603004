@@ -107,9 +107,22 @@ def robots_allowed(url: str, user_agent: str) -> bool:
         return False
     robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
     parser = RobotFileParser(robots_url)
+    # RobotFileParser.read() sends the default "Python-urllib" User-Agent; some servers answer that
+    # with 403, which robotparser treats as "disallow all". Fetch robots.txt with our own User-Agent
+    # and keep robotparser's status-code semantics (401/403 -> disallow all, other 4xx -> allow all).
+    request = Request(robots_url, headers={"User-Agent": user_agent})
     try:
-        parser.read()
-    except (HTTPError, URLError, OSError) as error:
+        with urlopen(request, timeout=20) as response:  # noqa: S310 - robots.txt of a user-supplied URL.
+            parser.parse(response.read().decode("utf-8", errors="replace").splitlines())
+    except HTTPError as error:
+        if error.code in (401, 403):
+            parser.disallow_all = True
+        elif 400 <= error.code < 500:
+            parser.allow_all = True
+        else:
+            print(f"Skipping {url}: cannot verify {robots_url} ({error})", file=sys.stderr)
+            return False
+    except (URLError, OSError) as error:
         print(f"Skipping {url}: cannot verify {robots_url} ({error})", file=sys.stderr)
         return False
     if not parser.can_fetch(user_agent, url):
@@ -223,7 +236,8 @@ def main() -> int:
             }
             successful += 1
             print(f"Saved {output_path}")
-        except (HTTPError, URLError, TimeoutError, UnicodeError, ValueError, OSError) as error:
+        # LookupError: server sent an invalid charset (e.g. "utf-8,gbk"); skip that URL, keep going.
+        except (HTTPError, URLError, TimeoutError, UnicodeError, LookupError, ValueError, OSError) as error:
             failed += 1
             print(f"Skipping {url}: {error}", file=sys.stderr)
     write_manifest(manifest_path, manifest)
