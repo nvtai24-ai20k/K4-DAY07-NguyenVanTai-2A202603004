@@ -1,8 +1,17 @@
 # Báo Cáo Nhóm — Lab 7: Embedding & Vector Store
 
 **Nhóm:** RAUMAMIENTAY
-**Thành viên:** Nguyễn Văn Tài (2A202603004), [Thành viên 2], [Thành viên 3]
+**Thành viên:** Nguyễn Văn Tài (2A202603004), Nguyễn Đăng Thực (2A202603014), Lâm Hoàng Phúc (2A202602582), Nguyễn Đức Minh (2A202602891)
 **Ngày:** 2026-09-19
+
+> ⚠️ **Trước khi nộp:** mọi chỗ đánh dấu **`[CẦN ĐIỀN: …]`** là thông tin thành viên được nêu tên phải tự điền hoặc xác nhận. Xoá dấu đó sau khi điền xong.
+
+| Thành viên | MSSV | Vai | Chiến lược chunking |
+|-----------|------|-----|---------------------|
+| Nguyễn Văn Tài | 2A202603004 | R3 · Strategy (chunk theo heading, chạy baseline cho nhóm) | `HeadingChunker` (custom) |
+| Nguyễn Đăng Thực | 2A202603014 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `FixedSizeChunker` |
+| Lâm Hoàng Phúc | 2A202602582 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `RecursiveChunker` |
+| Nguyễn Đức Minh | 2A202602891 | `[CẦN ĐIỀN: R1 Data / R2 Benchmark / Report & Demo Lead]` | `SentenceChunker` |
 
 > **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -60,6 +69,7 @@ Crawl bằng `scripts/fetch_public_pages.py` ngày 2026-09-19 (robots.txt của 
 
 > Mỗi thành viên thử **một chiến lược khác nhau** trên cùng bộ tài liệu; nhóm tổng hợp và so sánh ở đây.
 > Mọi số liệu trong mục này lấy từ `python bench.py --strategy all` (log: `ket_qua_benchmark_all.txt`). Cùng corpus, cùng 5 câu hỏi, cùng embedding `text-embedding-3-small`, cùng LLM `gpt-4.1-nano` (temperature 0), top-3; chỉ khác đúng một dòng: dòng chọn chunker.
+> Số liệu hiện tại của cả 4 chiến lược được chạy trên `src/` của Nguyễn Văn Tài. **Thực, Phúc, Minh** mỗi người đổi `STRATEGY` trong `bench.py` sang chiến lược của mình (`"fixed"` / `"recursive"` / `"sentence"`), chạy `python bench.py` trên `src/` của chính mình, rồi cập nhật dòng của mình trong bảng "So Sánh Giữa Các Thành Viên" nếu số liệu khác.
 
 ### Phân tích đường cơ sở (Baseline Analysis)
 
@@ -125,17 +135,20 @@ class HeadingChunker:
         return chunks
 ```
 
-**Thành viên 2 — [Tên]**
+**Thành viên 2 — Nguyễn Đăng Thực (2A202603014)** (vai `[CẦN ĐIỀN]`)
 - **Loại chiến lược:** `FixedSizeChunker(chunk_size=400, overlap=80)`
-- **Mô tả & lý do chọn:** Baseline cửa sổ trượt: không phụ thuộc cấu trúc văn bản, overlap 80 ký tự (20%) để thông tin nằm ở ranh giới có hai cơ hội lọt top-k. Dùng làm mốc để đo xem chiến lược "hiểu cấu trúc" có lợi đến đâu.
+- **Mô tả & lý do chọn:** Baseline cửa sổ trượt: không phụ thuộc cấu trúc văn bản, overlap 80 ký tự (20%) để thông tin nằm ở ranh giới có hai cơ hội lọt top-k. Dùng làm mốc để đo xem chiến lược "hiểu cấu trúc" có lợi đến đâu. `[CẦN ĐIỀN: Thực xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi chunk_size/overlap thì ghi tham số mới]`
 - **Code snippet (nếu custom):** không (built-in).
 
-**Thành viên 3 — [Tên]**
+**Thành viên 3 — Lâm Hoàng Phúc (2A202602582)** (vai `[CẦN ĐIỀN]`)
 - **Loại chiến lược:** `RecursiveChunker(chunk_size=400)`
-- **Mô tả & lý do chọn:** Cắt theo ranh giới tự nhiên `\n\n → \n → ". " → " "` và gom mảnh nhỏ tới sát 400 ký tự. Văn bản quy định nhiều bullet/dòng ngắn nên cách này giữ trọn từng dòng quy định.
+- **Mô tả & lý do chọn:** Cắt theo ranh giới tự nhiên `\n\n → \n → ". " → " "` và gom mảnh nhỏ tới sát 400 ký tự. Văn bản quy định nhiều bullet/dòng ngắn nên cách này giữ trọn từng dòng quy định. `[CẦN ĐIỀN: Phúc xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi chunk_size thì ghi tham số mới]`
 - **Code snippet (nếu custom):** không (built-in).
 
-*Tham chiếu thêm:* `SentenceChunker(max_sentences_per_chunk=3)` cũng được chạy để so sánh (dành cho thành viên thứ 4 nếu nhóm có).
+**Thành viên 4 — Nguyễn Đức Minh (2A202602891)** (vai `[CẦN ĐIỀN]`)
+- **Loại chiến lược:** `SentenceChunker(max_sentences_per_chunk=3)`
+- **Mô tả & lý do chọn:** Gom 3 câu thành một chunk, không bao giờ cắt giữa câu. Mục đích là kiểm tra giả thuyết "chunk nhỏ, một ý" có giúp truy xuất trúng các câu chứa con số (hạn mức, mức phạt) hơn chunk dài không. Biết trước điểm yếu: văn bản quy định ít dấu chấm câu nên bullet và heading có thể bị dính vào nhau. `[CẦN ĐIỀN: Minh xác nhận hoặc viết lại lý do bằng lời của mình; nếu đổi max_sentences_per_chunk thì ghi tham số mới]`
+- **Code snippet (nếu custom):** không (built-in).
 
 ### So Sánh Giữa Các Thành Viên
 
@@ -144,9 +157,9 @@ class HeadingChunker:
 | Thành viên | Chiến lược (Strategy) | Chunks / avg | Điểm truy xuất (/10) | Điểm mạnh | Điểm yếu | Đối chứng MiniLM |
 |-----------|----------|------|----------------------|-----------|----------|------|
 | Nguyễn Văn Tài | HeadingChunker | 32 / 314 | **8** (doc_id 10) | Q1–Q3 top-1 và agent đúng. Q3 có filter: **chiến lược duy nhất** mà nano trả lời đúng, vì mục 2.1 được tách riêng | Q4: mảnh đuôi 93 ký tự (chủ yếu là tiêu đề "Phục vụ phòng đọc") chiếm top-1. Q5: agent bỏ sót "Turnitin". Q3 không filter: agent từ chối trả lời | 7 (doc_id 9) |
-| [Thành viên 2] | FixedSize 400/80 | 30 / 366 | **9** (doc_id 10) | Cả 5 câu có chunk đáp án ở top-1 | Q3 (filter): nano gán nhầm "03 tài liệu" cho học viên cao học. Chunk cắt giữa từ ("ệu (làm rách…"), khó đọc | 6 (doc_id 8) |
-| [Thành viên 3] | Recursive 400 | 35 / 262 | **9** (doc_id 10) | Cả 5 câu top-1. Q3 không filter vẫn đúng vì top-1 là trang Phục vụ "8 cuốn (5 TV + 3 ngoại văn)" | Q3 (filter): nano lẫn sang "đọc tại chỗ: 03 tài liệu" nên trả lời "3 tài liệu". Phần chung nhân đôi: hai chunk "500đ" giống hệt (0.554) chiếm hạng 2–3 ở Q2 | 6 (doc_id 7) |
-| (tham chiếu) | Sentence ×3 | 41 / 223 | 8 (doc_id 9) | Q1, Q4, Q5 top-1, chunk ngắn gọn | Q2, Q3 đáp án ở hạng 2. Q3 filter: agent chỉ nêu "5 tài liệu". Q3 không filter: trả lời "10 tài liệu", **sai đối tượng** | 8 (doc_id 9) |
+| Nguyễn Đăng Thực | FixedSize 400/80 | 30 / 366 | **9** (doc_id 10) | Cả 5 câu có chunk đáp án ở top-1 | Q3 (filter): nano gán nhầm "03 tài liệu" cho học viên cao học. Chunk cắt giữa từ ("ệu (làm rách…"), khó đọc | 6 (doc_id 8) |
+| Lâm Hoàng Phúc | Recursive 400 | 35 / 262 | **9** (doc_id 10) | Cả 5 câu top-1. Q3 không filter vẫn đúng vì top-1 là trang Phục vụ "8 cuốn (5 TV + 3 ngoại văn)" | Q3 (filter): nano lẫn sang "đọc tại chỗ: 03 tài liệu" nên trả lời "3 tài liệu". Phần chung nhân đôi: hai chunk "500đ" giống hệt (0.554) chiếm hạng 2–3 ở Q2 | 6 (doc_id 7) |
+| Nguyễn Đức Minh | Sentence ×3 | 41 / 223 | 8 (doc_id 9) | Q1, Q4, Q5 top-1, chunk ngắn gọn | Q2, Q3 đáp án ở hạng 2. Q3 filter: agent chỉ nêu "5 tài liệu". Q3 không filter: trả lời "10 tài liệu", **sai đối tượng** | 8 (doc_id 9) |
 
 **Chiến lược nào tốt nhất cho chủ đề này? Tại sao?**
 > Với embedding chính thức `text-embedding-3-small`, Fixed và Recursive (9/10) nhỉnh hơn Heading và Sentence (8/10), và cả 4 đều tìm được chunk đáp án trong top-3 ở 5/5 câu. Nhưng chênh lệch chỉ **1 điểm** và đến từ những chỗ rất khác nhau. Fixed/Recursive mất điểm vì LLM nhỏ đọc nhầm danh sách ở Q3. Heading mất điểm vì một mảnh đuôi quá ngắn (Q4) và agent bỏ sót chi tiết (Q5). Khi đổi sang MiniLM thì thứ hạng **đảo ngược** (Sentence 8, Heading 7, Fixed/Recursive 6; bản MiniLM dùng agent trích xuất nên chỉ so được tương đối). Nên với 5 câu hỏi, nhóm không kết luận được một chiến lược thắng tuyệt đối. Nhóm chọn **Heading** làm hướng phát triển: đây là chiến lược duy nhất giúp LLM nhỏ trả lời đúng câu khó nhất (Q3), và nó cho trích dẫn truy vết được tới "Điều/mục". Điểm yếu Q4 sửa được dễ bằng cách gộp mảnh đuôi quá ngắn vào mảnh trước.
@@ -182,7 +195,7 @@ Câu 3 cố ý **không nói người hỏi là ai**, trong khi corpus có hai t
 | 4 | Vật dụng vào phòng đọc | Fixed / Sentence / Recursive (2/2) | Có (hạng 1; Heading hạng 3) | Heading: mảnh đuôi 93 ký tự thắng mảnh có đáp án |
 | 5 | Kiểm tra trùng lặp | Fixed / Sentence / Recursive (2/2) | Có, hạng 1 ở cả 4 | Heading: agent nói đúng tên dịch vụ nhưng bỏ sót Turnitin (thiếu chi tiết, 1/2) |
 
-Điểm nhóm theo chiến lược tốt nhất (Fixed hoặc Recursive): **9/10**. Chiến lược heading bắt buộc của L3A: 8/10.
+Điểm nhóm theo chiến lược tốt nhất (Fixed của Thực hoặc Recursive của Phúc): **9/10**. Chiến lược heading bắt buộc của L3A (Tài): 8/10. Sentence (Minh): 8/10.
 
 **Lọc bằng metadata có giúp ích không? Ở câu hỏi nào?**
 > **Có, ở câu 3.** Không filter thì top-1 là tài liệu **giảng viên** ở Fixed, Sentence và Heading (Recursive top-1 là trang chung "8 cuốn"). Hậu quả: Sentence trả lời "10 tài liệu", **sai đối tượng**; Heading thấy ngữ cảnh lẫn hai đối tượng nên từ chối trả lời. Có `audience=student` thì chunk mục 2.1 lên **top-1** ở 3/4 chiến lược (Sentence hạng 2). Nhưng filter **cứng** có giá: ở câu 1, không filter thì top-1 là 1.000đ, còn filter `student` thì top-3 **không còn** chunk 1.000đ nào, chỉ còn "500đ" (đã kiểm với Heading và Recursive). Lý do là đáp án 1.000đ nằm ở tài liệu `audience=all`. Nhóm đề xuất filter `{"audience": ["student", "all"]}` (store hỗ trợ giá trị list). Thử ở câu 3 với Heading và Recursive, chunk chứa đáp án chiếm **hạng 1 và 2**.
@@ -190,6 +203,18 @@ Câu 3 cố ý **không nói người hỏi là ai**, trong khi corpus có hai t
 ---
 
 ## 4. Thuyết trình (Demo) & Bài học nhóm — Nhóm (5 điểm)
+
+**Phân công demo (6–8 phút, mỗi thành viên đều trình bày chiến lược của mình):**
+
+| Phần | Thời lượng | Người trình bày |
+|------|-----------|-----------------|
+| Chủ đề & bộ tài liệu (crawl, làm sạch, tách file theo audience) | 1' | `[CẦN ĐIỀN: tên — thường là người giữ vai R1 Data]` |
+| Chiến lược Heading | 30" | Nguyễn Văn Tài |
+| Chiến lược FixedSize | 30" | Nguyễn Đăng Thực |
+| Chiến lược Recursive | 30" | Lâm Hoàng Phúc |
+| Chiến lược Sentence | 30" | Nguyễn Đức Minh |
+| So sánh, chiến lược nào thắng, failure case | 3' | `[CẦN ĐIỀN: tên — thường là Report & Demo Lead]` |
+| Demo live `python bench.py` (Q3 có/không filter) | 2' | `[CẦN ĐIỀN: tên]` |
 
 **Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
 > 1. **Đổi embedding tác động mạnh hơn đổi chunker.** Số lượt có chunk đáp án ở top-1 (4 chiến lược × 5 câu): `text-embedding-3-small` **17/20**, MiniLM 11/20, mock 2/20. Chỉ số này đo ở tầng retrieval nên không phụ thuộc LLM. Câu Q1 từ hỏng (MiniLM để "500đ" thắng) thành đúng ở cả 4 chiến lược. Thứ hạng giữa các chunker cũng đảo khi đổi embedding.
@@ -222,5 +247,7 @@ Câu 3 cố ý **không nói người hỏi là ai**, trong khi corpus có hai t
 | Lựa chọn tài liệu (Document Set Quality) | 9 / 10 |
 | Thiết kế chiến lược (Strategy Design) | 13 / 15 |
 | Chất lượng truy xuất (Retrieval Quality) | 9 / 10 |
-| Thuyết trình (Demo) | _ / 5 (điền sau buổi demo) |
-| **Tổng phần nhóm** | **31 / 35 (chưa tính Demo)** |
+| Thuyết trình (Demo) | `[CẦN ĐIỀN: cả nhóm tự chấm sau buổi demo]` / 5 |
+| **Tổng phần nhóm** | **31 / 35 + điểm Demo** |
+
+> `[CẦN ĐIỀN: cả nhóm thống nhất lại các điểm tự đánh giá ở trên; hiện là đề xuất của Tài]`
